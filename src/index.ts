@@ -25,7 +25,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.get('/hello', async (req: Request, res: Response) => {
     try {
-        const data = await client.query('SELECT $1::text as message', ['Hello world!'])
+        const data = await client.query(`SELECT $1::text AS MESSAGE`, ['Hello world!'])
         console.log(data.rows[0].message) // Hello world!
         res.send(data.rows)
     } catch (err) {
@@ -35,7 +35,7 @@ app.get('/hello', async (req: Request, res: Response) => {
 
 app.get('/todos', async (req: Request, res: Response) => {
     try {
-        const todos = await client.query('SELECT * FROM todos')
+        const todos = await client.query(`SELECT * FROM todos`)
         res.send(todos.rows);
     } catch (error) {
         console.log(error);
@@ -46,7 +46,7 @@ app.post('/todos', async (req: Request, res: Response) => {
     try {
         const task = req.body.task;
         // console.log(req.body);
-        const data = await client.query('INSERT INTO todos(task) values($1) RETURNING *', [task])
+        const data = await client.query(`INSERT INTO todos(task) VALUES($1) RETURNING *`, [task])
         res.send(data.rows);
         // const data = await
     } catch (error) {
