@@ -1,21 +1,12 @@
-import express, { Request, Response } from 'express';
-import { Client } from 'pg';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const app = express();
-const client = new Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: Number(process.env.DB_PORT),
-});
+import express, { Request, Response } from 'express';
+import { userRouter } from './routes/user.route';
+import { client } from './db/connection';
 
-client
-    .connect()
-    .then(() => console.log('DB connected successfully'))
-    .catch(console.log);
+const app = express();
+
 
 app.use(express.json());
 
@@ -23,15 +14,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello, TS World!! & docker');
 });
 
-app.get('/hello', async (req: Request, res: Response) => {
-    try {
-        const data = await client.query(`SELECT $1::text AS MESSAGE`, ['Hello world!'])
-        console.log(data.rows[0].message) // Hello world!
-        res.send(data.rows)
-    } catch (err) {
-        console.error(err);
-    }
-});
+app.use('/users', userRouter);
 
 app.get('/todos', async (req: Request, res: Response) => {
     try {
