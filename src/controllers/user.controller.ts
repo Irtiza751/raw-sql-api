@@ -14,16 +14,19 @@ class UserController {
       );
 
       const dbUser = result.rows[0]
-      const token = jwt.sign(dbUser.id, process.env.JWT_SECRET || 'abcxyz');
-      const refreshToken = jwt.sign(dbUser.id, process.env.REFRESH_SECRET || 'xyzabc');
+      const userId = { id: dbUser.id }
+      const token = jwt.sign(userId, process.env.JWT_SECRET || 'abcxyz');
+      const refreshToken = jwt.sign(userId, process.env.REFRESH_SECRET || 'xyzabc');
 
       const tokens = await client.query(
         `INSERT INTO tokens(token, refresh_token, user_id)
-        VALUES ($1, $2, $3, $4) RETURNING *`, [token, refreshToken, dbUser.id]
+        VALUES ($1, $2, $3) RETURNING *`, [token, refreshToken, dbUser.id]
       );
 
       res.send({ dbUser, auth: tokens.rows[0] });
     } catch (e) {
+      console.log(e);
+
       res.status(400).json(e)
     }
   }
