@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { client } from "../db/connection";
-import { User, userSchema } from "../types/UserSchema";
+import { User, loginSchema, userSchema } from "../types/UserSchema";
 import { JwtService } from "../services/JwtService";
+import { TokenTable } from "../types/TokenTable";
 
 class UserController {
   async register(req: Request, res: Response) {
@@ -29,6 +30,40 @@ class UserController {
       console.log(e);
 
       res.status(400).json(e)
+    }
+  }
+
+  async login(req: Request, res: Response) {
+    try {
+      const payload = req.body;
+      const result = loginSchema.parse(payload);
+
+      const { rows } = await client.query<User>(
+        `SELECT * FROM users WHERE email = $1;`, [result.email]
+      );
+
+      const user = rows[0];
+
+      if (user) {
+        const userId = { id: user.id };
+        const token = JwtService.sign(userId, 'normal');
+        const refreshToken = JwtService.sign(userId, 'refresh');
+
+        const tokensRes = await client.query<TokenTable>(
+          `UPDATE tokens SET token = $1, refresh_token = $2 WHERE user_id = $3 RETURNING *`,
+          [token, refreshToken, user.id]
+        )
+
+        res.json({ user, auth: tokensRes.rows[0] });
+      } else {
+        res.status(404).json({
+          msg: 'user not found!'
+        })
+      }
+    } catch (error) {
+      console.log(error);
+
+      res.status(400).json(error);
     }
   }
 }
