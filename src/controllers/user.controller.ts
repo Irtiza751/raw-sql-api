@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import jwt from 'jsonwebtoken';
 import { client } from "../db/connection";
 import { User, userSchema } from "../types/UserSchema";
+import { JwtService } from "../services/JwtService";
 
 class UserController {
   async register(req: Request, res: Response) {
@@ -15,8 +15,9 @@ class UserController {
 
       const dbUser = result.rows[0]
       const userId = { id: dbUser.id }
-      const token = jwt.sign(userId, process.env.JWT_SECRET || 'abcxyz');
-      const refreshToken = jwt.sign(userId, process.env.REFRESH_SECRET || 'xyzabc');
+
+      const token = JwtService.sign({ userId }, 'normal');
+      const refreshToken = JwtService.sign({ userId }, 'refresh');
 
       const tokens = await client.query(
         `INSERT INTO tokens(token, refresh_token, user_id)
