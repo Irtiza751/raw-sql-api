@@ -9,3 +9,8 @@ The src directory contains all the source code, & in the src folder the code is 
 1. Modules folder -- (name_module) eg. auth_moudle etc.
 2. Controllers folder -- (name.controller.ts) eg. auth.controller.ts
 3. Lib folder -- (name.ts)
+
+### TODO
+- [x] Create a User repository
+- [ ] Create a Todo repository
+- [ ] Create a Tokens repository

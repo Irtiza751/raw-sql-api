@@ -1,20 +1,16 @@
 import { Request, Response } from "express";
 import { client } from "../db/connection";
-import { User, loginSchema, userSchema } from "../types/UserSchema";
+import { loginSchema, userSchema } from "../types/UserSchema";
 import { JwtService } from "../services/JwtService";
 import { TokenTable } from "../types/TokenTable";
+import { UserRepo } from "../repos/UserRepo";
 
 class UserController {
   async register(req: Request, res: Response) {
     try {
       const user = userSchema.parse(req.body);
 
-      const result = await client.query<User>(
-        `INSERT INTO users (email, username, password)
-         VALUES ($1, $2, $3) RETURNING *`, [user.email, user.username, user.password]
-      );
-
-      const dbUser = result.rows[0]
+      const dbUser = await UserRepo.insert(user);
       const userId = { id: dbUser.id }
 
       const token = JwtService.sign({ userId }, 'normal');
@@ -38,11 +34,7 @@ class UserController {
       const payload = req.body;
       const result = loginSchema.parse(payload);
 
-      const { rows } = await client.query<User>(
-        `SELECT * FROM users WHERE email = $1;`, [result.email]
-      );
-
-      const user = rows[0];
+      const user = await UserRepo.findByEmail(result.email);
 
       if (user) {
         const userId = { id: user.id };
@@ -65,6 +57,11 @@ class UserController {
 
       res.status(400).json(error);
     }
+  }
+
+  async getUsers(req: Request, res: Response) {
+    const users = await UserRepo.findAll();
+    res.json(users);
   }
 }
 
