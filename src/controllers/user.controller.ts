@@ -59,9 +59,13 @@ class UserController {
     }
   }
 
-  async getUsers(req: Request, res: Response) {
-    const users = await UserRepo.findAll();
-    res.json(users);
+  async profile(req: Request, res: Response) {
+    try {
+      const user = await UserRepo.findById(req.user.id);
+      res.json(user);
+    } catch (error) {
+      res.status(400).send(error);
+    }
   }
 }
 

@@ -15,6 +15,15 @@ export class UserRepo {
     return rows[0];
   }
 
+  static async findById(id: number) {
+    const { rows } = await client.query<User>(
+      `select * from users where id = $1`,
+      [id]
+    );
+
+    return rows[0];
+  }
+
   static async insert(user: Omit<User, 'id'>) {
     const { rows } = await client.query(
       `insert into users(email, username, password)

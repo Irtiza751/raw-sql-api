@@ -9,7 +9,7 @@ export class JwtService {
   static sign(payload: any, type: SignType) {
     switch (type) {
       case 'refresh':
-        return jwt.sign(payload, this.REFRESH_SECRET, { expiresIn: '12h' });
+        return jwt.sign(payload, this.REFRESH_SECRET, { expiresIn: '30d' });
       default:
         return jwt.sign(payload, this.JWT_SECRET, { expiresIn: '1h' });
     }
