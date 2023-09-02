@@ -1,4 +1,4 @@
-export interface TokenTable {
+export interface TokenSchema {
   id: number;
   token: string;
   refresh_token: string;

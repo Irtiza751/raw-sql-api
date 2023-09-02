@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { JwtService } from "../services/JwtService";
+import { JwtService } from "../lib/services/JwtService";
 
 export class AuthMiddleware {
   static auth(req: Request, res: Response, next: NextFunction) {

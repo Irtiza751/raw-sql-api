@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { client } from "../db/connection";
-import { loginSchema, userSchema } from "../types/UserSchema";
-import { JwtService } from "../services/JwtService";
-import { TokenTable } from "../types/TokenTable";
-import { UserRepo } from "../repos/UserRepo";
+import { loginSchema, userSchema } from "../lib/types/UserSchema";
+import { JwtService } from "../lib/services/JwtService";
+import { TokenSchema } from "../lib/types/TokenSchema";
+import { UserRepo } from "../lib/repos/UserRepo";
 
 class UserController {
   async register(req: Request, res: Response) {
@@ -41,7 +41,7 @@ class UserController {
         const token = JwtService.sign(userId, 'normal');
         const refreshToken = JwtService.sign(userId, 'refresh');
 
-        const tokensRes = await client.query<TokenTable>(
+        const tokensRes = await client.query<TokenSchema>(
           `UPDATE tokens SET token = $1, refresh_token = $2 WHERE user_id = $3 RETURNING *`,
           [token, refreshToken, user.id]
         )

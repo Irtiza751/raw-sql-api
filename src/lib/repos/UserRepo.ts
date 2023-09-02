@@ -1,4 +1,4 @@
-import { client } from "../db/connection";
+import { client } from "../../db/connection";
 import { User } from "../types/UserSchema";
 
 export class UserRepo {
