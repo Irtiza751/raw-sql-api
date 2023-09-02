@@ -3,6 +3,7 @@ dotenv.config();
 
 import express, { Request, Response } from 'express';
 import { userRouter } from './routes/user.route';
+import { todoRoutes } from './routes/todo.route';
 
 declare module 'express-serve-static-core' {
   export interface Request {
@@ -20,6 +21,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/users', userRouter);
+app.use('/todos', todoRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

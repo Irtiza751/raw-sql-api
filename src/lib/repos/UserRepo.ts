@@ -3,7 +3,7 @@ import { User } from "../types/UserSchema";
 
 export class UserRepo {
   static async findAll() {
-    const { rows } = await client.query(`select * from users;`);
+    const { rows } = await client.query<User>(`select * from users;`);
     return rows;
   }
 
