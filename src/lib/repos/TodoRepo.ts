@@ -2,8 +2,11 @@ import { client } from "../../db/connection";
 import { TodoSchema } from "../types/TodoSchema";
 
 export class TodoRepo {
-  static async findAll() {
-    const { rows } = await client.query<TodoSchema>(`select * from todos;`);
+  static async findAll(userId: number) {
+    const { rows } = await client.query<TodoSchema>(
+      `select * from todos where user_id = $1;`,
+      [userId]
+    );
     return rows;
   }
 

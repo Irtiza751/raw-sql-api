@@ -5,5 +5,6 @@ import { TodoController } from "../controllers/todo.controller";
 const todoRoutes = Router();
 
 todoRoutes.get('/', AuthMiddleware.auth, TodoController.getTodos);
+todoRoutes.post('/', AuthMiddleware.auth, TodoController.createTodo);
 
 export { todoRoutes }
