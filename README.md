@@ -12,5 +12,5 @@ The src directory contains all the source code, & in the src folder the code is 
 
 ### TODO
 - [x] Create a User repository
-- [ ] Create a Todo repository
+- [x] Create a Todo repository
 - [ ] Create a Tokens repository
