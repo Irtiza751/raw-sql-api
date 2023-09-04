@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TS World!! & docker');
+  res.send({ msg: 'Welcome to the todo API' });
 });
 
 app.use('/users', userRouter);
