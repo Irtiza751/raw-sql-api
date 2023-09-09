@@ -6,5 +6,6 @@ const todoRoutes = Router();
 
 todoRoutes.get('/', AuthMiddleware.auth, TodoController.getTodos);
 todoRoutes.post('/', AuthMiddleware.auth, TodoController.createTodo);
+todoRoutes.patch('/:id', AuthMiddleware.auth, TodoController.updateTodo);
 
 export { todoRoutes }

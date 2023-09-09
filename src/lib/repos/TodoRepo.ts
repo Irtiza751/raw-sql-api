@@ -25,6 +25,14 @@ export class TodoRepo {
     return rows;
   }
 
+  static async update(todo: TodoSchema) {
+    const { rows } = await client.query(
+      `update todos set title = $1, description = $2 where id = $3`,
+      [todo.title, todo.description, todo.id]
+    )
+    return rows[0];
+  }
+
   static async deleteOne(id: number) {
     const { rows } = await client.query(`delete from todos where id = $1`, [id]);
     return rows;

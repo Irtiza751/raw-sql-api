@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express, { Request, Response } from 'express';
+import morgan from 'morgan';
 import { userRouter } from './routes/user.route';
 import { todoRoutes } from './routes/todo.route';
 
@@ -15,6 +16,7 @@ const app = express();
 
 
 app.use(express.json());
+app.use(morgan('dev'));
 
 app.get('/', (req: Request, res: Response) => {
   res.send({ msg: 'Welcome to the todo API' });
