@@ -1,5 +1,5 @@
 import { client } from "../../db/connection";
-import { TodoSchema } from "../types/TodoSchema";
+import { TodoFields, TodoSchema } from "../types/TodoSchema";
 
 export class TodoRepo {
   static async findAll(userId: number) {
@@ -25,11 +25,23 @@ export class TodoRepo {
     return rows;
   }
 
-  static async update(todo: TodoSchema) {
-    const { rows } = await client.query(
-      `update todos set title = $1, description = $2 where id = $3`,
-      [todo.title, todo.description, todo.id]
-    )
+  static async update(todo: Partial<TodoSchema>, fields: TodoFields) {
+    const data = fields
+      .map(field => todo[field])
+      .filter(field => field !== undefined);
+
+    let query = `update todos set
+      ${fields.includes('title') ? 'title = $1,' : ''}
+      ${fields.includes('description') ? 'description = $2' : ''}
+      where id = $${fields.length + 1};
+    `;
+
+    const values = [...data, todo.id];
+
+    console.log({ values, query, fields });
+
+    const { rows } = await client.query<TodoSchema>(query, values);
+
     return rows[0];
   }
 
