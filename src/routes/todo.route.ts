@@ -8,5 +8,6 @@ todoRoutes.get('/', AuthMiddleware.auth, TodoController.getTodos);
 todoRoutes.get('/:id', AuthMiddleware.auth, TodoController.singleTodo);
 todoRoutes.post('/', AuthMiddleware.auth, TodoController.createTodo);
 todoRoutes.patch('/:id', AuthMiddleware.auth, TodoController.updateTodo);
+todoRoutes.delete('/:id', AuthMiddleware.auth, TodoController.deleteTodo);
 
 export { todoRoutes }

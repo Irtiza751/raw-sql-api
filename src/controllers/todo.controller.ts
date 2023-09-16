@@ -38,9 +38,9 @@ export class TodoController {
       const payload = todoSchema.parse(req.body);
       const todo = { ...payload, userId: req.user.id };
       const result = await TodoRepo.insert(todo);
-      res.send(result);
+      res.status(201).send(result);
     } catch (error) {
-      res.status(401).json(error);
+      res.status(400).json(error);
     }
   }
 
@@ -56,13 +56,24 @@ export class TodoController {
 
       const result = await TodoRepo.update(todo);
 
-      res.send({ result });
+      res.status(202).send({ result });
     } catch (error) {
       if (error instanceof ZodError) {
         return res.status(400).json(UtilityService.parseZodError(error));
       }
 
       return res.status(400).json(error);
+    }
+  }
+
+  // delete a todo
+  static async deleteTodo(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      const result = await TodoRepo.deleteOne(id);
+      res.status(202).send({ result });
+    } catch (error) {
+      res.status(400).json(error);
     }
   }
 }
