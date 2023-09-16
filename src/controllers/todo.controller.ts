@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { TodoRepo } from "../lib/repos/TodoRepo";
-import { z } from "zod";
-import { TodoFields } from "../lib/types/TodoSchema";
+import { ZodError, z } from "zod";
+import { TodoSchema } from "../lib/types/TodoSchema";
+import { UtilityService } from "../lib/services/UtilityService";
 
 const todoSchema = z.object({
-  title: z.string().max(50, { message: "max character limit is 50" }),
-  description: z.string()
+  title: z.string({ required_error: 'title is requierd' })
+    .max(50, { message: "max character limit is 50" }),
+  description: z.string({ required_error: 'description is required' })
 });
 
 export class TodoController {
@@ -33,27 +35,23 @@ export class TodoController {
 
   // update the existing todo
   static async updateTodo(req: Request, res: Response) {
-    const fields: TodoFields = ['title', 'description'];
-
-    const userProvidedFields = Object.keys(req.body) as TodoFields;
-
-    const fieldsToUpdate = userProvidedFields.filter((field) => fields.includes(field));
-
     try {
       // extract todo id from param
+      const body = todoSchema.parse(req.body);
+
       const todoId = Number(req.params.id);
-      const payload = req.body;
       // make the todo object
-      const todo = { ...payload, userId: req.user.id, id: todoId };
+      const todo: TodoSchema = { ...body, userId: req.user.id, id: todoId };
 
-      const response = await TodoRepo.update(todo, userProvidedFields);
-      res.send({ fieldsToUpdate, response });
+      const result = await TodoRepo.update(todo);
 
-      // res.send(response);
+      res.send({ result });
     } catch (error) {
-      console.log(error);
+      if (error instanceof ZodError) {
+        return res.status(400).json(UtilityService.parseZodError(error));
+      }
 
-      res.status(400).json(error);
+      return res.status(400).json(error);
     }
   }
 }

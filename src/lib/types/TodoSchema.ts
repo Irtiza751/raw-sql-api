@@ -4,5 +4,3 @@ export interface TodoSchema {
   description: string;
   userId: number;
 }
-
-export type TodoFields = ['title', 'description'];
