@@ -21,6 +21,17 @@ export class TodoController {
     }
   }
 
+  // get single todo
+  static async singleTodo(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      const todo = TodoRepo.findById(id);
+      res.send(todo);
+    } catch (error) {
+      res.status(400).json(error);
+    }
+  }
+
   // create new todo
   static async createTodo(req: Request, res: Response) {
     try {
