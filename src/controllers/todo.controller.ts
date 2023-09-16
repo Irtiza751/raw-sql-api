@@ -25,7 +25,7 @@ export class TodoController {
   static async singleTodo(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const todo = TodoRepo.findById(id);
+      const todo = await TodoRepo.findById(id);
       res.send(todo);
     } catch (error) {
       res.status(400).json(error);
