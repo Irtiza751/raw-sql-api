@@ -13,10 +13,10 @@ The src directory contains all the source code, & in the src folder the code is 
 ### TODO
 - [x] Create a User repository
 - [x] Create a Todo repository
-- [ ] Create a Tokens repository
-- [ ] Prevent sending refresh token to the browser
-- [ ] Create the CRUD controller for todos
-- [ ] To update the todo alway send `title & description` both.
+- [x] Create a Tokens repository
+- [x] Prevent sending refresh token to the browser
+- [x] Create the CRUD controller for todos
+- [x] To update the todo alway send `title & description` both.
 - [ ] Implement the auto login on token expiry
 
 Refresh token rotation flow
