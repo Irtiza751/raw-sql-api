@@ -16,8 +16,9 @@ The src directory contains all the source code, & in the src folder the code is 
 - [x] Create a Tokens repository
 - [x] Prevent sending refresh token to the browser
 - [x] Create the CRUD controller for todos
-- [x] To update the todo alway send `title & description` both.
+- [x] To update the todo alway send `title & description` both
 - [ ] Implement the auto login on token expiry
+- [ ] Add cascasde delete whene user delete a self account
 
 Refresh token rotation flow
 ![auth-expire-flow](https://github.com/Irtiza751/raw-sql-api/assets/91867702/85de7d75-aa76-4adb-abd3-ef58c3a8bc22)
