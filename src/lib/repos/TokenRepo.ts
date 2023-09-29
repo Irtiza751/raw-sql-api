@@ -26,7 +26,6 @@ export class TokenRepo {
       [token.token, token.refresh_token, token.user_id]
     );
 
-    console.log(rows, token);
     return rows[0];
   }
 }

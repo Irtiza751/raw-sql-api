@@ -9,9 +9,9 @@ export class JwtService {
   static sign(payload: any, type: SignType) {
     switch (type) {
       case 'refresh':
-        return jwt.sign(payload, this.REFRESH_SECRET, { expiresIn: '30d' });
+        return jwt.sign(payload, this.REFRESH_SECRET, { expiresIn: '1h' });
       default:
-        return jwt.sign(payload, this.JWT_SECRET, { expiresIn: '1h' });
+        return jwt.sign(payload, this.JWT_SECRET, { expiresIn: '30s' });
     }
   }
 
@@ -22,5 +22,9 @@ export class JwtService {
       default:
         return jwt.verify(token, this.JWT_SECRET);
     }
+  }
+
+  static decode(token: string) {
+    return jwt.decode(token);
   }
 }
