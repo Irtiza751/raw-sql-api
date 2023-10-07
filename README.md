@@ -17,7 +17,7 @@ The src directory contains all the source code, & in the src folder the code is 
 - [x] Prevent sending refresh token to the browser
 - [x] Create the CRUD controller for todos
 - [x] To update the todo alway send `title & description` both
-- [ ] Implement the auto login on token expiry
+- [x] Implement the auto login on token expiry
 - [ ] Add cascasde delete whene user delete a self account
 - [ ] Add the user profile image option as well
 
