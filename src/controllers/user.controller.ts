@@ -6,11 +6,18 @@ import { UserRepo } from "../lib/repos/UserRepo";
 import { TokenRepo } from "../lib/repos/TokenRepo";
 import { ZodError } from "zod";
 import { UtilityService } from "../lib/services/UtilityService";
+import { genSalt, hash } from 'bcryptjs';
 
 class UserController {
   async register(req: Request, res: Response) {
     try {
       const body = userSchema.parse(req.body);
+      const { password } = body;
+
+      const salt = await genSalt(10);
+      const hashPwd = await hash(password, salt);
+      body.password = hashPwd;
+
       const user = await UserRepo.insert(body);
       const payload = { id: user.id }
       // creating auth token
