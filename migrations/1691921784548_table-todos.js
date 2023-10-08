@@ -2,16 +2,16 @@
 
 exports.shorthands = undefined;
 
-exports.up = pgm => {
+exports.up = (pgm) => {
   pgm.sql(`CREATE TABLE todos (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
-    user_id INTEGER REFERENCES users(id)
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
   );
-  `)
+  `);
 };
 
-exports.down = pgm => {
-  pgm.sql(`DROP TABLE todos;`)
+exports.down = (pgm) => {
+  pgm.sql(`DROP TABLE todos;`);
 };
