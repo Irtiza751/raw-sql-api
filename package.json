@@ -6,7 +6,9 @@
   "scripts": {
     "start": "ts-node ./src/index",
     "start:dev": "ts-node-dev ./src/index",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "migrate:up": "DATABASE_URL=postgres://mirtiza:mirtiza123@localhost:5432/todo_db npm run migrate up",
+    "migrate:down": "DATABASE_URL=postgres://mirtiza:mirtiza123@localhost:5432/todo_db npm run migrate down"
   },
   "keywords": [],
   "author": "",
