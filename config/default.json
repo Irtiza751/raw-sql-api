@@ -1,9 +1,9 @@
 {
   "db": {
     "user": "mirtiza",
-    "password": "mirtiza123",
+    "password": "abc123",
     "host": "localhost",
     "port": 5432,
-    "database": "todo_db"
+    "database": "sql_todo_db"
   }
 }
